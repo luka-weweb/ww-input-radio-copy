@@ -7,6 +7,12 @@ function getDataObject(options) {
 }
 
 export default {
+    options: {
+        layout: ['flex'],
+    },
+    inherit: {
+        type: 'ww-layout',
+    },
     editor: {
         label: 'Form Radio',
         icon: 'radio',
@@ -15,7 +21,6 @@ export default {
         { name: 'change', label: 'On Change', event: { value: '' }, default: true },
         { name: 'initValueChange', label: 'On Init value change', event: { value: '' } },
     ],
-    customStylePropertiesOrder: ['direction', ['rowGap', 'columnGap'], ['justifyContent', 'alignItems'], 'flexWrap'],
     properties: {
         options: {
             label: 'Choices values',
@@ -95,10 +100,6 @@ export default {
             defaultValue: null,
             section: 'settings',
         },
-        choicesElement: {
-            hidden: true,
-            defaultValue: { isWwObject: true, type: 'ww-text' },
-        },
         required: {
             label: 'Required',
             type: 'OnOff',
@@ -112,139 +113,42 @@ export default {
             },
             /* wwEditor:end */
         },
-        direction: {
-            label: 'Direction',
-            type: 'BigIconRadioGroup',
-            options: {
-                choices: [
-                    { icon: 'arrow-down', value: 'column', label: 'Vertical' },
-                    { icon: 'arrow-right', value: 'row', label: 'Horizontal' },
-                ],
-            },
-            responsive: true,
-            states: true,
-            classes: true,
-            defaultValue: 'column',
+        triggerLayout: {
+            hidden: true,
+            defaultValue: [],
         },
-        rowGap: {
-            label: 'Rows gap',
-            type: 'Length',
-            options: {
-                unitChoices: [
-                    { value: 'px', label: 'px', min: 0, max: 100 },
-                    { value: '%', label: '%', min: 0, max: 100, digits: 2 },
-                    { value: 'em', label: 'em', min: 0, max: 10, digits: 2 },
-                    { value: 'rem', label: 'rem', min: 0, max: 10, digits: 2 },
-                ],
+        checkbox: {
+            hidden: true,
+            defaultValue: {
+                isWwObject: true,
+                type: 'ww-checkbox',
+                content: {
+                    color: '#FFFFFF',
+                    fontSize: 10,
+                    icon: 'fas fa-check',
+                },
+                state: {
+                    states: [{ id: 'checked', label: 'checked' }],
+                    style: {
+                        default: {
+                            backgroundColor: '#FFFFFF',
+                            border: '1px solid #767676',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            height: 'auto',
+                            padding: '2px',
+                            width: 'auto',
+                        },
+                        checked_default: {
+                            backgroundColor: '#767676',
+                        },
+                    },
+                },
             },
-            responsive: true,
-            states: true,
-            classes: true,
         },
-        columnGap: {
-            label: 'Columns gap',
-            type: 'Length',
-            options: {
-                unitChoices: [
-                    { value: 'px', label: 'px', min: 0, max: 100 },
-                    { value: '%', label: '%', min: 0, max: 100, digits: 2 },
-                    { value: 'em', label: 'em', min: 0, max: 10, digits: 2 },
-                    { value: 'rem', label: 'rem', min: 0, max: 10, digits: 2 },
-                ],
-            },
-            responsive: true,
-            states: true,
-            classes: true,
-        },
-        justifyContent: {
-            label: 'Justify',
-            type: 'TextRadioGroup',
-            options: content => {
-                if (content.direction === 'row') {
-                    return {
-                        choices: [
-                            { value: 'flex-start', title: 'Start', icon: 'align-x-start' },
-                            { value: 'center', title: 'Center', icon: 'align-x-center' },
-                            { value: 'flex-end', title: 'End', icon: 'align-x-end' },
-                            {
-                                value: 'space-around',
-                                title: 'Space around',
-                                icon: 'align-x-space-around',
-                            },
-                            {
-                                value: 'space-between',
-                                title: 'Space between',
-                                icon: 'align-x-space-between',
-                            },
-                        ],
-                    };
-                } else {
-                    return {
-                        choices: [
-                            {
-                                value: 'flex-start',
-                                title: 'Start',
-                                icon: 'align-x-start-vertical',
-                            },
-                            { value: 'center', title: 'Center', icon: 'align-x-center-vertical' },
-                            { value: 'flex-end', title: 'End', icon: 'align-x-end-vertical' },
-                            {
-                                value: 'space-around',
-                                title: 'Space around',
-                                icon: 'align-x-space-around-vertical',
-                            },
-                            {
-                                value: 'space-between',
-                                title: 'Space between',
-                                icon: 'align-x-space-between-vertical',
-                            },
-                        ],
-                    };
-                }
-            },
-            responsive: true,
-            states: true,
-            classes: true,
-            defaultValue: 'center',
-        },
-        alignItems: {
-            label: 'Alignment',
-            type: 'TextRadioGroup',
-            options: content => {
-                if (content.direction === 'row') {
-                    return {
-                        choices: [
-                            { value: 'flex-start', title: 'Start', icon: 'align-y-start' },
-                            { value: 'center', title: 'Center', icon: 'align-y-center' },
-                            { value: 'flex-end', title: 'End', icon: 'align-y-end' },
-                            { value: 'stretch', title: 'Stretch', icon: 'align-y-stretch' },
-                            { value: 'baseline', title: 'Baseline', icon: 'align-y-baseline' },
-                        ],
-                    };
-                } else {
-                    return {
-                        choices: [
-                            { value: 'flex-start', title: 'Start', icon: 'align-x-start' },
-                            { value: 'center', title: 'Center', icon: 'align-x-center' },
-                            { value: 'flex-end', title: 'End', icon: 'align-x-end' },
-                            { value: 'stretch', title: 'Stretch', icon: 'align-x-stretch' },
-                        ],
-                    };
-                }
-            },
-            responsive: true,
-            states: true,
-            classes: true,
-            defaultValue: 'flex-start',
-        },
-        flexWrap: {
-            label: 'Wrap elements',
-            type: 'OnOff',
-            hidden: content => content.direction !== 'row',
-            responsive: true,
-            states: true,
-            classes: true,
-            defaultValue: true,
+        dropdownLayout: {
+            hidden: true,
+            defaultValue: [],
         },
     },
 };

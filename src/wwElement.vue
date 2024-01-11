@@ -1,26 +1,19 @@
 <template v-if="content">
-    <div class="ww-input-radio" :style="style" ww-responsive="ww-input-radio">
-        <div v-for="(option, index) in options" :key="index" class="ww-input-radio__container">
-            <wwLayoutItemContext v-if="option" :index="index" is-repeat>
-                <input
-                    :id="`${wwElementState.name}-${uniqueId}-${option.label}`"
-                    :value="option.value"
-                    :checked="option.value === value"
-                    class="ww-input-radio__radio"
-                    :class="{ editing: isEditing }"
-                    type="radio"
-                    :name="`${wwElementState.name}-${uniqueId}`"
-                    :required="content.required"
-                    @input="handleManualInput($event)"
-                />
-                <component
-                    :is="isEditing ? 'div' : 'label'"
-                    :for="`${wwElementState.name}-${uniqueId}-${option.label}`"
-                >
-                    <wwElement v-bind="content.choicesElement" :ww-props="{ text: option.label }" />
-                </component>
-            </wwLayoutItemContext>
-        </div>
+    <div>
+        <wwLayout path="triggerLayout" />
+        <input
+            :id="`${wwElementState.name}-${uniqueId}-${uid}`"
+            ref="checkboxInput"
+            :checked="value"
+            :value="value"
+            type="checkbox"
+            :name="`${wwElementState.name}-${uniqueId}-${uid}`"
+            :class="content.checkbox && 'hidden'"
+            :required="content.required"
+            :disabled="isReadonly"
+            v-bind="attributes"
+        />
+        <wwLayout path="dropdownLayout" />
     </div>
 </template>
 
@@ -30,6 +23,7 @@ import { computed } from 'vue';
 export default {
     props: {
         content: { type: Object, required: true },
+        flexboxElement: { type: Object, required: true },
         /* wwEditor:start */
         wwEditorState: { type: Object, required: true },
         /* wwEditor:end */
@@ -76,21 +70,6 @@ export default {
                     };
                 });
         },
-        style() {
-            return {
-                flexDirection: this.content.direction,
-                justifyContent: this.content.justifyContent,
-                alignItems: this.content.alignItems,
-                rowGap: this.content.rowGap,
-                columnGap: this.content.columnGap,
-                flexWrap:
-                    this.content.direction === 'column'
-                        ? 'nowrap'
-                        : this.content.flexWrap === false
-                        ? 'nowrap'
-                        : 'wrap',
-            };
-        },
     },
     watch: {
         /* wwEditor:start */
@@ -118,21 +97,15 @@ export default {
 
 <style lang="scss" scoped>
 .ww-input-radio {
-    display: flex;
-
-    &__container {
-        padding: 0.4rem 0;
-        display: flex;
-        flex-wrap: nowrap;
-        align-items: center;
-    }
     &__radio {
         outline: none;
         margin-right: 0.4rem;
+
         /* wwEditor:start */
         &.editing {
             pointer-events: none;
         }
+
         /* wwEditor:end */
     }
 }
